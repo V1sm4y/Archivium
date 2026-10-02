@@ -1,0 +1,53 @@
+# --- Secrets & local config ---
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+local.settings.json
+
+# --- Python ---
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+dist/
+*.egg-info/
+.eggs/
+.venv/
+venv/
+env/
+.mypy_cache/
+.pytest_cache/
+.ruff_cache/
+.coverage
+coverage.xml
+htmlcov/
+
+# --- Node / frontend ---
+node_modules/
+.pnpm-store/
+.yarn/
+npm-debug.log*
+yarn-error.log*
+.vite/
+.cache/
+.parcel-cache/
+
+# --- Editors & OS ---
+.idea/
+.vscode/
+*.swp
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# --- Data & artifacts ---
+*.log
+/tmp/
+data/raw/
+data/uploads/
+*.db
+*.sqlite3
