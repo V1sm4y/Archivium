@@ -85,3 +85,14 @@ async def upload_dataset(file: UploadFile = File(...)) -> DatasetMetadata:
     datasets[dataset_id] = metadata
 
     return metadata
+
+
+@app.get("/datasets/{dataset_id}", response_model=DatasetMetadata)
+def get_dataset(dataset_id: str) -> DatasetMetadata:
+    dataset = datasets.get(dataset_id)
+    if dataset is None:
+        raise HTTPException(
+            status_code=404,
+            detail="Dataset not found",
+        )
+    return dataset
