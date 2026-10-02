@@ -1,5 +1,6 @@
 import io
-from typing import List
+from typing import Dict, List
+from uuid import uuid4
 
 import pandas as pd
 from fastapi import FastAPI, File, HTTPException, UploadFile
@@ -17,12 +18,15 @@ ALLOWED_CONTENT_TYPES = {
 
 MAX_UPLOAD_BYTES = 50 * 1024 * 1024
 
+datasets: Dict[str, "DatasetMetadata"] = {}
+
 
 class HealthResponse(BaseModel):
     status: str
 
 
 class DatasetMetadata(BaseModel):
+    dataset_id: str
     filename: str
     rows: int
     columns: int
@@ -68,9 +72,16 @@ async def upload_dataset(file: UploadFile = File(...)) -> DatasetMetadata:
     except pd.errors.ParserError as exc:
         raise HTTPException(status_code=400, detail=f"Malformed CSV: {exc}")
 
-    return DatasetMetadata(
+    dataset_id = str(uuid4())
+
+    metadata = DatasetMetadata(
+        dataset_id=dataset_id,
         filename=filename,
         rows=int(len(frame.index)),
         columns=int(len(frame.columns)),
         column_names=[str(column) for column in frame.columns],
     )
+
+    datasets[dataset_id] = metadata
+
+    return metadata
